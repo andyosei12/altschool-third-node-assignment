@@ -1,4 +1,4 @@
-# Node.js first assignment
+# Node.js second assignment
 
 **Kindly run npm install to install the project dependencies**
 
