@@ -1,38 +1,23 @@
-const http = require('http');
-const fs = require('fs');
+const path = require('path');
 
+const express = require('express');
+
+const app = express();
 const port = 5000;
 
-const requestHandler = (req, res) => {
-  if (req.url === '/') {
-    const file = fs.readFileSync('./index.html');
-    res.setHeader('content-type', 'text/html');
-    res.writeHead(200);
-    res.write(file);
-    res.end();
-  }
+app.use(express.static('views'));
 
-  if (req.url.endsWith('.html') && req.method === 'GET') {
-    try {
-      const [_, fileName] = req.url.split('/');
-      const fileLocation = `./${fileName}`;
-      const file = fs.readFileSync(fileLocation);
-      res.setHeader('content-type', 'text/html');
-      res.writeHead(200);
-      res.write(file);
-      res.end();
-    } catch (error) {
-      const file = fs.readFileSync('./404.html', { encoding: 'utf-8' });
-      res.setHeader('content-type', 'text/html');
-      res.writeHead(500);
-      res.write(file);
-      res.end();
-    }
-  }
-};
+const HomeIndexPath = path.join(__dirname, 'views', 'index.html');
+const NotFoundFile = path.join(__dirname, 'views', '404.html');
 
-const server = http.createServer(requestHandler);
+app.get('/index.html', async (req, res) => {
+  res.status(200).sendFile(HomeIndexPath);
+});
 
-server.listen(port, () => {
+app.get('*', async (req, res) => {
+  res.status(404).sendFile(NotFoundFile);
+});
+
+app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });
