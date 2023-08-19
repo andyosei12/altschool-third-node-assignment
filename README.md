@@ -6,3 +6,7 @@
 
 1. Run _npm start / npm run start:web_ for the web server
 2. Run _npm run start:api_ for the api server
+
+## Items Filtering
+
+You can filter items by size with value either 's','m','l'

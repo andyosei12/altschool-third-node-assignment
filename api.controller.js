@@ -7,7 +7,16 @@ const {
 } = require('./db/inventory');
 
 const getAllItems = async (req, res) => {
-  const inventoryList = await getAllInventory();
+  const { size } = req.query;
+  let inventoryList = await getAllInventory();
+
+  // filtering by size or price
+  if (size) {
+    inventoryList = inventoryList.filter(
+      (inventory) => inventory.size === size
+    );
+  }
+
   res.status(200).json({
     data: inventoryList,
     error: null,
